@@ -33,6 +33,9 @@ public class JwtController {
     @Autowired
     PasswordEncoder encoder;
 
+    @Autowired
+    JwtHelper jwtHelper;
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -46,7 +49,7 @@ public class JwtController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        String jwtToken = JwtHelper.generateToken(userDetails.getEmail());
+        String jwtToken = jwtHelper.generateToken(userDetails.getUsername());
 
         return ResponseEntity.ok()
                 .body(new LoginResponse(jwtToken, userDetails.getId()));
@@ -84,7 +87,7 @@ public class JwtController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        String jwtToken = JwtHelper.generateToken(userDetails.getEmail());
+        String jwtToken = jwtHelper.generateToken(userDetails.getUsername());
 
         return ResponseEntity.status(201)
                 .body(new SignupResponse(jwtToken, userDetails.getId()));
