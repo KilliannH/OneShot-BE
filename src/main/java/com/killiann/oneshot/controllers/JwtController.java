@@ -8,7 +8,7 @@ import com.killiann.oneshot.payloads.LoginResponse;
 import com.killiann.oneshot.payloads.SignupRequest;
 import com.killiann.oneshot.payloads.SignupResponse;
 import com.killiann.oneshot.repositories.UserRepository;
-import com.killiann.oneshot.utils.JwtUtil;
+import com.killiann.oneshot.helpers.JwtHelper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +33,6 @@ public class JwtController {
     @Autowired
     PasswordEncoder encoder;
 
-    @Autowired
-    JwtUtil jwtUtil;
-
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -49,7 +46,7 @@ public class JwtController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        String jwtToken = jwtUtil.generateJwtToken(userDetails);
+        String jwtToken = JwtHelper.generateToken(userDetails.getEmail());
 
         return ResponseEntity.ok()
                 .body(new LoginResponse(jwtToken, userDetails.getId()));
@@ -87,7 +84,7 @@ public class JwtController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        String jwtToken = jwtUtil.generateJwtToken(userDetails);
+        String jwtToken = JwtHelper.generateToken(userDetails.getEmail());
 
         return ResponseEntity.status(201)
                 .body(new SignupResponse(jwtToken, userDetails.getId()));
