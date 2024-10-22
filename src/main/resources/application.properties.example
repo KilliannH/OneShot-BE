@@ -1,5 +1,5 @@
-spring.data.mongodb.uri=mongodb://localhost:27017/db
+spring.data.mongodb.uri=mongodb://localhost:27017/oneshot-db
 
 #custom properties
-token.secret=secret
+token.secret=FU9fI92UKe+WugUm1ythKvaxJ+9fobPq4Q5h9MSaYWJCW4Q896hACWf6HCuL3d8Y
 token.exp=100000
