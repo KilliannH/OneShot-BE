@@ -46,10 +46,13 @@ public class ProfileController {
 
         return profileRepository.findById(id)
                 .map(profile -> {
-                    profile.setBio(newProfile.getBio());
-                    profile.setBirthday(newProfile.getBirthday());
                     profile.setDisplayName(newProfile.getDisplayName());
                     profile.setGender(newProfile.getGender());
+                    profile.setUserId(newProfile.getUserId());
+                    profile.setBirthday(newProfile.getBirthday());
+                    profile.setJob(newProfile.getJob());
+                    profile.setBio(newProfile.getBio());
+                    profile.setImageUrls(newProfile.getImageUrls());
                     return profileRepository.save(profile);
                 })
                 .orElseThrow(() -> new ProfileNotFoundException(id));

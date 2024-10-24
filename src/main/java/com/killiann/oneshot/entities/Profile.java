@@ -15,6 +15,7 @@ public class Profile {
     @NotBlank
     private String userId;
     private String bio;
+    private String job;
     @NotBlank
     private Long birthday;
     @NotBlank
@@ -26,12 +27,14 @@ public class Profile {
 
     public Profile() {}
 
-    public Profile(String userId, String bio, Long birthday, String displayName, Character gender) {
+    public Profile(String userId, String bio, String job, Long birthday, String displayName, Character gender, List<String> imageUrls) {
         this.userId = userId;
         this.bio = bio;
+        this.job = job;
         this.birthday = birthday;
         this.displayName = displayName;
         this.gender = gender;
+        this.imageUrls = imageUrls;
     }
 
     public String getId() {
@@ -53,6 +56,14 @@ public class Profile {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 
     public Long getBirthday() {
@@ -77,5 +88,13 @@ public class Profile {
 
     public void setGender(Character gender) {
         this.gender = gender;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 }
