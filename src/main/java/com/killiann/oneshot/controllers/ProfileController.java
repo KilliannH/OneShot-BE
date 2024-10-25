@@ -24,6 +24,11 @@ public class ProfileController {
         return profileRepository.findAll();
     }
 
+    @PostMapping("/profiles")
+    Profile add(@RequestBody Profile newProfile) {
+        return profileRepository.save(newProfile);
+    }
+
     @GetMapping("/profiles/{id}")
     Profile one(@PathVariable String id) {
         return profileRepository.findById(id)
@@ -34,11 +39,6 @@ public class ProfileController {
     Profile byUserId(@PathVariable String userId) {
         return profileRepository.findByUserId(userId)
                 .orElseThrow(() -> new ProfileNotFoundException(userId));
-    }
-
-    @PostMapping("/profiles")
-    Profile add(@RequestBody Profile newProfile) {
-        return profileRepository.save(newProfile);
     }
 
     @PutMapping("/profiles/{id}")

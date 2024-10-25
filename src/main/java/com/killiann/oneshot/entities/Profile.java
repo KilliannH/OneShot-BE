@@ -21,13 +21,13 @@ public class Profile {
     @NotBlank
     private String displayName;
     @NotBlank
-    private Character gender;
+    private String gender;
 
-    private List<String> imageUrls = new ArrayList<>();
+    private List<String> imageUrls = new ArrayList<>(List.of("", "", ""));
 
     public Profile() {}
 
-    public Profile(String userId, String bio, String job, Long birthday, String displayName, Character gender, List<String> imageUrls) {
+    public Profile(String userId, String bio, String job, Long birthday, String displayName, String gender, List<String> imageUrls) {
         this.userId = userId;
         this.bio = bio;
         this.job = job;
@@ -82,11 +82,11 @@ public class Profile {
         this.displayName = displayName;
     }
 
-    public Character getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Character gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
