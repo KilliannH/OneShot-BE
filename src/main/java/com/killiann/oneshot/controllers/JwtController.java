@@ -58,11 +58,7 @@ public class JwtController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
-        // by default username is substring of @ (left part) - xxxxxx@b.fr
-        // points are deleted
-
-        String username = signUpRequest.getEmail().split("@")[0];
-        username = username.replaceAll("[^a-z]+", "");
+        String username = signUpRequest.getUsername();
 
         if (userRepository.existsByUsername(username)) {
             return ResponseEntity.badRequest().body(new GenericError("/signup", "Bad Request", "Username is already in use", 400));

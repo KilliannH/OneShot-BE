@@ -10,7 +10,10 @@ public class SignupRequest {
 
     @NotBlank
     @Size(max = 50)
+    private String username;
 
+    @NotBlank
+    @Size(max = 50)
     @Email
     private String email;
 
@@ -20,13 +23,20 @@ public class SignupRequest {
     @Size(min = 5, max = 40)
     private String password;
 
-    private String imageUrl;
-
     public SignupRequest() {}
 
-    public SignupRequest(String email, String password) {
+    public SignupRequest(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
