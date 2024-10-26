@@ -1,5 +1,6 @@
 package com.killiann.oneshot.controllers;
 
+import com.killiann.oneshot.entities.Profile;
 import com.killiann.oneshot.entities.User;
 import com.killiann.oneshot.errors.GenericError;
 import com.killiann.oneshot.jwt.UserDetailsImpl;
@@ -7,6 +8,7 @@ import com.killiann.oneshot.payloads.LoginRequest;
 import com.killiann.oneshot.payloads.LoginResponse;
 import com.killiann.oneshot.payloads.SignupRequest;
 import com.killiann.oneshot.payloads.SignupResponse;
+import com.killiann.oneshot.repositories.ProfileRepository;
 import com.killiann.oneshot.repositories.UserRepository;
 import com.killiann.oneshot.helpers.JwtHelper;
 import jakarta.validation.Valid;
@@ -29,6 +31,9 @@ public class JwtController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ProfileRepository profileRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -74,6 +79,11 @@ public class JwtController {
                 encoder.encode(signUpRequest.getPassword()));
 
         User dbUser = userRepository.save(user);
+
+        // create simple profile
+        Profile dbProfile = new Profile(dbUser.getId(), dbUser.getUsername());
+        profileRepository.save(dbProfile);
+
 
         // log user in
         Authentication authentication = authenticationManager
