@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Document(value = "users")
 public class User {
     @Id
@@ -18,13 +21,19 @@ public class User {
     @NotBlank
     @Size(max = 120)
     private String password;
+    private Set<Role> roles;
 
-    public User() {}
+    public User() {
+        this.roles = new HashSet<>();
+        this.roles.add(new Role("1", "ROLE_USER")); // Initialize with ROLE_USER
+    }
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.roles = new HashSet<>();
+        this.roles.add(new Role("1", "ROLE_USER")); // Initialize with ROLE_USER
     }
 
     public String getId() {
@@ -53,5 +62,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
