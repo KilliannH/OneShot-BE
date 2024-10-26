@@ -7,6 +7,7 @@ import com.killiann.oneshot.exceptions.UserNotFoundException;
 import com.killiann.oneshot.repositories.ProfileRepository;
 import com.killiann.oneshot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,6 @@ public class ProfileController {
         return profileRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/profiles")
     Profile add(@RequestBody Profile newProfile) {
         return profileRepository.save(newProfile);
@@ -60,7 +60,7 @@ public class ProfileController {
                 .orElseThrow(() -> new ProfileNotFoundException(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/profiles/{id}")
     void deleteProfile(@PathVariable String id) {
         profileRepository.deleteById(id);

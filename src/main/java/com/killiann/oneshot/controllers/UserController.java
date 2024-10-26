@@ -24,14 +24,14 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Secured("ROLE_ADMIN")
     @GetMapping("/users/{id}")
     User one(@PathVariable String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Secured("ROLE_ADMIN")
     @PutMapping("/users/{id}")
     User replaceUser(@RequestBody User newUser, @PathVariable String id) {
 
@@ -45,7 +45,7 @@ public class UserController {
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable String id) {
         userRepository.deleteById(id);
