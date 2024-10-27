@@ -2,6 +2,9 @@ package com.killiann.oneshot.entities;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(value = "locations")
@@ -9,17 +12,21 @@ public class Location {
 
     @Id
     private String id;
+
     @NotBlank
     private String userId;
-    private String lat;
-    private String lng;
 
-    Location() {}
+    // Combine latitude and longitude into a single GeoJSON Point
+    @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
+    private GeoJsonPoint location;
 
-    Location(String userId, String lat, String lng) {
+    // Default constructor
+    public Location() {}
+
+    // Updated constructor to use Point
+    public Location(String userId, double lng, double lat) {
         this.userId = userId;
-        this.lat = lat;
-        this.lng = lng;
+        this.location = new GeoJsonPoint(lng, lat);
     }
 
     public String getId() {
@@ -34,19 +41,11 @@ public class Location {
         this.userId = userId;
     }
 
-    public String getLat() {
-        return lat;
+    public GeoJsonPoint getLocation() {
+        return location;
     }
 
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLng() {
-        return lng;
-    }
-
-    public void setLng(String lng) {
-        this.lng = lng;
+    public void setLocation(double lng, double lat) {
+        this.location = new GeoJsonPoint(lng, lat);
     }
 }
