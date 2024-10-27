@@ -18,10 +18,13 @@ public class Profile {
     private String job;
     @NotBlank
     private Long birthday;
+
     @NotBlank
     private String displayName;
     @NotBlank
     private String gender;
+
+    private String interestedIn;
 
     private List<String> imageUrls = new ArrayList<>(List.of("", "", ""));
 
@@ -32,13 +35,14 @@ public class Profile {
         this.displayName = displayName;
     }
 
-    public Profile(String userId, String bio, String job, Long birthday, String displayName, String gender, List<String> imageUrls) {
+    public Profile(String userId, String bio, String job, Long birthday, String displayName, String gender, String interestedIn, List<String> imageUrls) {
         this.userId = userId;
         this.bio = bio;
         this.job = job;
         this.birthday = birthday;
         this.displayName = displayName;
         this.gender = gender;
+        this.interestedIn = interestedIn;
         this.imageUrls = imageUrls;
     }
 
@@ -93,6 +97,14 @@ public class Profile {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getInterestedIn() {
+        return interestedIn;
+    }
+
+    public void setInterestedIn(String interestedIn) {
+        this.interestedIn = interestedIn;
     }
 
     public List<String> getImageUrls() {

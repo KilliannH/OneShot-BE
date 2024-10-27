@@ -50,6 +50,7 @@ public class ProfileController {
                 .map(profile -> {
                     profile.setDisplayName(newProfile.getDisplayName());
                     profile.setGender(newProfile.getGender());
+                    profile.setInterestedIn(newProfile.getInterestedIn());
                     profile.setUserId(newProfile.getUserId());
                     profile.setBirthday(newProfile.getBirthday());
                     profile.setJob(newProfile.getJob());
