@@ -3,17 +3,20 @@ package com.killiann.oneshot.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Document(collection = "pools")
 public class Pool {
     @Id
     private String id;
     private String userId;
-    private List<String> liked;
-    private List<String> matches;
+    private Set<String> liked = new HashSet<>();
+    private Set<String> matches = new HashSet<>();
 
-    Pool(String userId, List<String> liked, List<String> matches) {
+    Pool(String userId, Set<String> liked, Set<String> matches) {
         this.userId = userId;
         this.liked = liked;
         this.matches = matches;
@@ -31,19 +34,19 @@ public class Pool {
         this.userId = userId;
     }
 
-    public List<String> getLiked() {
+    public Set<String> getLiked() {
         return liked;
     }
 
-    public void setLiked(List<String> liked) {
+    public void setLiked(Set<String> liked) {
         this.liked = liked;
     }
 
-    public List<String> getMatches() {
+    public Set<String> getMatches() {
         return matches;
     }
 
-    public void setMatches(List<String> matches) {
+    public void setMatches(Set<String> matches) {
         this.matches = matches;
     }
 }

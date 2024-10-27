@@ -4,12 +4,10 @@ import com.killiann.oneshot.entities.Pool;
 import com.killiann.oneshot.exceptions.PoolNotFoundException;
 import com.killiann.oneshot.repositories.PoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Metrics;
-import org.springframework.data.geo.Point;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,22 +32,26 @@ public class PoolController {
     }
 
     @PostMapping("/pools/userId/{userId}")
-    Pool add(@RequestBody Pool newPool, @PathVariable String userId) {
+    public Pool addLikedUser(@RequestBody Pool newPool, @PathVariable String userId) {
         Optional<Pool> optUserPool = poolRepository.findByUserId(userId);
 
-        // first time, let's create pool
         if(optUserPool.isEmpty()) {
+            // First time, create pool
+            newPool.setMatches(new HashSet<>());
             return poolRepository.save(newPool);
         }
-        // not first time, update it
-        return optUserPool
-                .map(pool -> {
-                    pool.setUserId(newPool.getUserId());
-                    pool.setLiked(newPool.getLiked());
-                    pool.setMatches(newPool.getMatches());
-                    return poolRepository.save(pool);
-                })
-                .orElseThrow(() -> new PoolNotFoundException(userId));
+
+        Pool existingPool = optUserPool.get();
+
+        // Add each unique liked ID from newPool to the existing pool's liked list
+        for (String likedUserId : newPool.getLiked()) {
+            if (!existingPool.getLiked().contains(likedUserId)) {
+                existingPool.getLiked().add(likedUserId);
+            }
+        }
+
+        // Save the updated pool
+        return poolRepository.save(existingPool);
     }
 
     @Secured("ROLE_ADMIN")
