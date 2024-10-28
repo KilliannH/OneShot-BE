@@ -33,7 +33,7 @@ public class UserDataGenerator {
                     .append("username", faker.name().username())
                     .append("email", faker.internet().emailAddress())
                     .append("password", encryptedPassword)
-                    .append("roles", Arrays.asList("ROLE_USER"));
+                    .append("roles", Arrays.asList(new Document("_id", "1").append("name", "ROLE_USER")));
 
             usersCollection.insertOne(user);
             userIds.add(user.getObjectId("_id").toString()); // Capture the generated ObjectId
