@@ -1,5 +1,6 @@
 package com.killiann.oneshot.controllers;
 
+import com.killiann.oneshot.entities.Pool;
 import com.killiann.oneshot.entities.Profile;
 import com.killiann.oneshot.entities.User;
 import com.killiann.oneshot.errors.GenericError;
@@ -8,6 +9,7 @@ import com.killiann.oneshot.payloads.LoginRequest;
 import com.killiann.oneshot.payloads.LoginResponse;
 import com.killiann.oneshot.payloads.SignupRequest;
 import com.killiann.oneshot.payloads.SignupResponse;
+import com.killiann.oneshot.repositories.PoolRepository;
 import com.killiann.oneshot.repositories.ProfileRepository;
 import com.killiann.oneshot.repositories.UserRepository;
 import com.killiann.oneshot.helpers.JwtHelper;
@@ -34,6 +36,10 @@ public class JwtController {
 
     @Autowired
     ProfileRepository profileRepository;
+
+    @Autowired
+    PoolRepository poolRepository;
+
 
     @Autowired
     PasswordEncoder encoder;
@@ -81,9 +87,12 @@ public class JwtController {
         User dbUser = userRepository.save(user);
 
         // create simple profile
-        Profile dbProfile = new Profile(dbUser.getId(), dbUser.getUsername());
+        Profile dbProfile = new Profile(dbUser.getId());
         profileRepository.save(dbProfile);
 
+        // create simple pool
+        Pool dbPool = new Pool(dbProfile.getUserId());
+        poolRepository.save(dbPool);
 
         // log user in
         Authentication authentication = authenticationManager

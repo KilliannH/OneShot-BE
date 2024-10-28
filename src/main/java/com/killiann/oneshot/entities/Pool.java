@@ -13,13 +13,21 @@ public class Pool {
     @Id
     private String id;
     private String userId;
-    private Set<String> liked = new HashSet<>();
-    private Set<String> matches = new HashSet<>();
+    private Set<String> liked;
+    private Set<String> matches;
 
-    Pool(String userId, Set<String> liked, Set<String> matches) {
+    public Pool() {}
+
+    public Pool(String userId, Set<String> liked, Set<String> matches) {
         this.userId = userId;
         this.liked = liked;
         this.matches = matches;
+    }
+
+    public Pool(String userId) {
+        this.userId = userId;
+        this.liked = new HashSet<>();
+        this.matches = new HashSet<>();
     }
 
     public String getId() {

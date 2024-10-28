@@ -30,9 +30,8 @@ public class Profile {
 
     public Profile() {}
 
-    public Profile(String userId, String displayName) {
+    public Profile(String userId) {
         this.userId = userId;
-        this.displayName = displayName;
     }
 
     public Profile(String userId, String bio, String job, Long birthday, String displayName, String gender, String interestedIn, List<String> imageUrls) {

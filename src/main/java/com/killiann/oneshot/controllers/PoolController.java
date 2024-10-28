@@ -25,7 +25,6 @@ public class PoolController {
         return poolRepository.findAll();
     }
 
-    @Secured("ROLE_ADMIN")
     @PostMapping("/pools")
     Pool add(@RequestBody Pool newPool) {
         return poolRepository.save(newPool);
@@ -35,22 +34,36 @@ public class PoolController {
     public Pool addLikedUser(@RequestBody Pool newPool, @PathVariable String userId) {
         Optional<Pool> optUserPool = poolRepository.findByUserId(userId);
 
-        if(optUserPool.isEmpty()) {
-            // First time, create pool
-            newPool.setMatches(new HashSet<>());
-            return poolRepository.save(newPool);
-        }
-
         Pool existingPool = optUserPool.get();
 
-        // Add each unique liked ID from newPool to the existing pool's liked list
-        for (String likedUserId : newPool.getLiked()) {
-            if (!existingPool.getLiked().contains(likedUserId)) {
-                existingPool.getLiked().add(likedUserId);
+        // Get the likedUserId from newPool
+        String likedUserId = newPool.getLiked().stream().findFirst().orElse(null);
+        if (likedUserId == null) {
+            throw new IllegalArgumentException("Liked user ID must not be null");
+        }
+
+        // Add likedUserId to existing pool's liked list if not already present
+        if (!existingPool.getLiked().contains(likedUserId)) {
+            existingPool.getLiked().add(likedUserId);
+        }
+
+        // Check if liked user exists and get their pool
+        Optional<Pool> optLikedPool = poolRepository.findByUserId(likedUserId);
+        if (optLikedPool.isPresent()) {
+            Pool likedPool = optLikedPool.get();
+
+            // Check if the liked user has also liked the current user (mutual match)
+            if (likedPool.getLiked().contains(userId)) {
+                // Add each other to the matches list
+                existingPool.getMatches().add(likedUserId);
+                likedPool.getMatches().add(userId);
+
+                // Save both pools to reflect the mutual match
+                poolRepository.save(likedPool);
             }
         }
 
-        // Save the updated pool
+        // Save the updated existing pool
         return poolRepository.save(existingPool);
     }
 
