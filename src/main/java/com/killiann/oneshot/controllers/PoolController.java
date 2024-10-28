@@ -30,7 +30,7 @@ public class PoolController {
         return poolRepository.save(newPool);
     }
 
-    @PostMapping("/pools/userId/{userId}")
+    @PostMapping("/pools/liked/userId/{userId}")
     public Pool addLikedUser(@RequestBody Pool newPool, @PathVariable String userId) {
         Optional<Pool> optUserPool = poolRepository.findByUserId(userId);
 
@@ -61,6 +61,27 @@ public class PoolController {
                 // Save both pools to reflect the mutual match
                 poolRepository.save(likedPool);
             }
+        }
+
+        // Save the updated existing pool
+        return poolRepository.save(existingPool);
+    }
+
+    @PostMapping("/pools/disliked/userId/{userId}")
+    public Pool addDislikedUser(@RequestBody Pool newPool, @PathVariable String userId) {
+        Optional<Pool> optUserPool = poolRepository.findByUserId(userId);
+
+        Pool existingPool = optUserPool.get();
+
+        // Get the dislikedUserId from newPool
+        String dislikedUserId = newPool.getDisliked().stream().findFirst().orElse(null);
+        if (dislikedUserId == null) {
+            throw new IllegalArgumentException("Disliked user ID must not be null");
+        }
+
+        // Add likedUserId to existing pool's liked list if not already present
+        if (!existingPool.getDisliked().contains(dislikedUserId)) {
+            existingPool.getDisliked().add(dislikedUserId);
         }
 
         // Save the updated existing pool

@@ -23,6 +23,7 @@ public class PoolDataGenerator {
             Document pool = new Document()
                     .append("userId", userId)
                     .append("liked", new ArrayList<>())
+                    .append("disliked", new ArrayList<>())
                     .append("matches", new ArrayList<>());
             poolsCollection.insertOne(pool);
         }

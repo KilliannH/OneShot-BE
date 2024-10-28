@@ -14,18 +14,21 @@ public class Pool {
     private String id;
     private String userId;
     private Set<String> liked;
+    private Set<String> disliked;
     private Set<String> matches;
 
     public Pool() {}
 
-    public Pool(String userId, Set<String> liked, Set<String> matches) {
+    public Pool(String userId, Set<String> liked, Set<String> disliked, Set<String> matches) {
         this.userId = userId;
+        this.disliked = disliked;
         this.liked = liked;
         this.matches = matches;
     }
 
     public Pool(String userId) {
         this.userId = userId;
+        this.disliked = new HashSet<>();
         this.liked = new HashSet<>();
         this.matches = new HashSet<>();
     }
@@ -48,6 +51,14 @@ public class Pool {
 
     public void setLiked(Set<String> liked) {
         this.liked = liked;
+    }
+
+    public Set<String> getDisliked() {
+        return disliked;
+    }
+
+    public void setDisliked(Set<String> disliked) {
+        this.disliked = disliked;
     }
 
     public Set<String> getMatches() {
