@@ -87,7 +87,7 @@ public class JwtController {
         User dbUser = userRepository.save(user);
 
         // create simple profile
-        Profile dbProfile = new Profile(dbUser.getId());
+        Profile dbProfile = new Profile(dbUser.getId(), dbUser.getUsername());
         profileRepository.save(dbProfile);
 
         // create simple pool
