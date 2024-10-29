@@ -26,7 +26,7 @@ public class Profile {
 
     private String interestedIn;
 
-    private List<String> imageUrls = new ArrayList<>(List.of("", "", ""));
+    private String imageUrl;
 
     public Profile() {}
 
@@ -35,7 +35,7 @@ public class Profile {
         this.displayName = displayName;
     }
 
-    public Profile(String userId, String bio, String job, Long birthday, String displayName, String gender, String interestedIn, List<String> imageUrls) {
+    public Profile(String userId, String bio, String job, Long birthday, String displayName, String gender, String interestedIn, String imageUrl) {
         this.userId = userId;
         this.bio = bio;
         this.job = job;
@@ -43,7 +43,7 @@ public class Profile {
         this.displayName = displayName;
         this.gender = gender;
         this.interestedIn = interestedIn;
-        this.imageUrls = imageUrls;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
@@ -107,11 +107,11 @@ public class Profile {
         this.interestedIn = interestedIn;
     }
 
-    public List<String> getImageUrls() {
-        return imageUrls;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

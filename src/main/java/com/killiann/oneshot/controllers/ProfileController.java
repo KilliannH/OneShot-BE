@@ -55,7 +55,7 @@ public class ProfileController {
                     profile.setBirthday(newProfile.getBirthday());
                     profile.setJob(newProfile.getJob());
                     profile.setBio(newProfile.getBio());
-                    profile.setImageUrls(newProfile.getImageUrls());
+                    profile.setImageUrl(newProfile.getImageUrl());
                     return profileRepository.save(profile);
                 })
                 .orElseThrow(() -> new ProfileNotFoundException(id));

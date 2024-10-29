@@ -1,7 +1,9 @@
 package com.killiann.oneshot.controllers;
 
+import com.killiann.oneshot.controllers.dto.MatchDto;
 import com.killiann.oneshot.entities.Pool;
 import com.killiann.oneshot.exceptions.PoolNotFoundException;
+import com.killiann.oneshot.repositories.MessageRepository;
 import com.killiann.oneshot.repositories.PoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -18,6 +20,9 @@ public class PoolController {
 
     @Autowired
     private PoolRepository poolRepository;
+
+    @Autowired
+    private MessageRepository messageRepository;
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/pools")
@@ -112,6 +117,30 @@ public class PoolController {
                     return poolRepository.save(pool);
                 })
                 .orElseThrow(() -> new PoolNotFoundException(id));
+    }
+
+    @PostMapping("/pools/matches")
+    void deleteMatch(@RequestBody MatchDto matchDto) {
+        Pool pool1 = poolRepository.findByUserId(matchDto.getUserId1()).orElseThrow(() -> new PoolNotFoundException(matchDto.getUserId1()));
+        Pool pool2 = poolRepository.findByUserId(matchDto.getUserId2()).orElseThrow(() -> new PoolNotFoundException(matchDto.getUserId2()));
+
+        // Remove match with userId2 from pool1's matches list
+        pool1.getMatches().removeIf(matchId -> matchId.equals(matchDto.getUserId2()));
+
+        // Remove match with userId1 from pool2's matches list
+        pool2.getMatches().removeIf(matchId -> matchId.equals(matchDto.getUserId1()));
+
+        // Construct possible roomIds
+        String roomId1 = matchDto.getUserId1() + "_" + matchDto.getUserId2();
+        String roomId2 = matchDto.getUserId2() + "_" + matchDto.getUserId1();
+
+        // Delete all messages for either roomId1 or roomId2
+        messageRepository.deleteByRoomId(roomId1);
+        messageRepository.deleteByRoomId(roomId2);
+
+        // Save both pools back to the repository
+        poolRepository.save(pool1);
+        poolRepository.save(pool2);
     }
 
     @DeleteMapping("/pools/{id}")

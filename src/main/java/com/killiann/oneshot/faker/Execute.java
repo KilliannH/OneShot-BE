@@ -13,7 +13,7 @@ public class Execute {
             MongoDatabase database = MongoDBConnection.getDatabase(client);
 
             UserDataGenerator userDataGenerator = new UserDataGenerator(database.getCollection("users"));
-            List<String> userIds = userDataGenerator.generateUsers(1);
+            List<String> userIds = userDataGenerator.generateUsers(15);
 
             ProfileDataGenerator profileDataGenerator = new ProfileDataGenerator(database.getCollection("profiles"));
             profileDataGenerator.generateProfiles(userIds);
